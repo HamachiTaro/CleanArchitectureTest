@@ -1,0 +1,100 @@
+@startuml
+
+package Domain{
+
+    '実際の処理をUseCaseに記載
+    class EditUseCase 
+    {
+        IUnityInputPresenter inputPresenter;
+        IDataStorePresenter datastorePresenter;
+
+        void Delete();
+        void Add();
+        void ChangePosition();
+        void ChangeRotation);
+        void ChangeScale();
+        void ChangeFrame();
+    }
+
+    interface IUnityInputPresenter
+    {
+        'usecaseがこれを叩いて、見た目を更新する
+        void ApplyPosition();
+        void ApplyRotation();
+        void ApplyScale();
+        ' Presenterからのイベント受け取り
+        IObservable<int> OnChangeFrameAsObservable();
+        IObservable<Vector3> OnChangePositionAsObservable();
+        IObservable<Vector3> OnChangeRotationAsObservable();
+        IObservable<Vector3> OnChangeScaleAsObservable();
+    }
+
+    EditUseCase -> IUnityInputPresenter
+}
+
+
+package Presenter {
+
+    class UnityInputPresenter
+    {
+        void ApplyPosition();
+        void ApplyRotation();
+        void ApplyScale();
+        IObservable<int> OnChangeFrameAsObservable();
+        IObservable<Vector3> OnChangePositionAsObservable();
+        IObservable<Vector3> OnChangeRotationAsObservable();
+        IObservable<Vector3> OnChangeScaleAsObservable();
+    }
+
+    interface IUIView
+    {
+        IObservable<Unit> OnClickSaveButtonAsObservable();
+        IObservable<Vector3> OnClickPositionAsObservable();
+        IObservable<Vector3> OnClickRotationAsObservable();
+        IObservable<Vector3> OnClickScaleAsObservable();
+    }
+
+    interface IGameView
+    {
+        void ChangePosition(int id, Vector3 position);
+        void ChangeRotation(int id, Vector3 rotation);
+        void ChangeScale(int id, Vector3 scale);
+    }
+
+    IUnityInputPresenter <|.. UnityInputPresenter
+    IUIView <- UnityInputPresenter 
+    UnityInputPresenter -> IGameView
+}
+
+package Detail {
+
+    'UnityEngine.UIを知っている
+    class UIView
+    {
+        UnityEngine.UI.Button saveButton;
+        UnityEngine.UI.Button positionButtton;
+        UnityEngine.UI.Button rotationButtton;
+        UnityEngine.UI.Button scaleButtton;
+        
+        'idを渡したいのでint
+        IObservable<int> OnClickSaveButtonAsObservable();
+        IObservable<Vector3> OnClickPositionAsObservable();
+        IObservable<Vector3> OnClickRotationAsObservable();
+        IObservable<Vector3> OnClickScaleAsObservable();
+    }
+
+    'UnityEngine.GameObjectを知っている
+    class GameView 
+    {
+        List<PlacedEffect> placedEffects;
+        void ChangePosition(int id, Vector3 position);
+        void ChangeRotation(int id, Vector3 rotation);
+        void ChangeScale(int id, Vector3 scale);
+    }
+
+    IUIView <|.. UIView
+    IGameView <|.. GameView
+}
+
+
+@enduml
