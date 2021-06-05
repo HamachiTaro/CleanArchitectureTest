@@ -1,0 +1,5 @@
+# CleanArchitectureTest
+
+# Asset
+- UniRx
+- Zenject
