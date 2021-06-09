@@ -29,7 +29,44 @@ package Domain{
         IObservable<Vector3> OnChangeScaleAsObservable();
     }
 
+    interface ISaveRepository
+    {
+        UniTask SaveAsync();
+        void LoadAsync();
+    }
+
+    ISaveRepository <- EditUseCase
     EditUseCase -> IUnityInputPresenter
+}
+
+package Repository {
+
+    class SaveDataRepository
+    {
+        UniTask SaveAsync();
+        void LoadAsync();
+    }
+
+    interface IJsonDataStore {
+        UniTask SaveAsync();
+        UniTask LoadAsync();
+    }
+
+    ISaveRepository <|.. SaveDataRepository
+    IJsonDataStore <- SaveDataRepository
+}
+
+package Data {
+
+    class JsonDataStore 
+    {
+        UniTask SaveAsync();
+        UniTask LoadAsync();
+        void ToJson();
+        void FromJson();
+    }
+
+    IJsonDataStore <|.. JsonDataStore
 }
 
 
