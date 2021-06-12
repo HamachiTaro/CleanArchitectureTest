@@ -18,6 +18,15 @@ public class MainInstaller : MonoInstaller
             .To<InputPresenter>()
             .AsCached();
         Container
+            .Bind<IIOButtonPresenter>()
+            .To<IOButtonPresenter>()
+            .AsCached();
+        // Container
+        //     .Bind<ISaveDataRepository>()
+        //     .To<>()
+        
+        
+        Container
             .Bind<IUIView>()
             .FromInstance(_uiView);
         Container

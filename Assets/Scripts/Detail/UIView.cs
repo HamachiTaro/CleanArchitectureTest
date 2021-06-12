@@ -24,6 +24,10 @@ namespace Detail
         [SerializeField] private Slider _scaleYSlider;
         [SerializeField] private Slider _scaleZSlider;
 
+        [SerializeField] private Button _loadButton;
+        [SerializeField] private Button _saveButton;
+        
+        
         private Vector3 _position = Vector3.zero;
         private Vector3 _rotation = Vector3.zero;
         private Vector3 _scale = Vector3.one;
@@ -52,7 +56,17 @@ namespace Detail
             Debug.Log("destroy uiView");
             _disposable.Dispose();
         }
-        
+
+        public IObservable<Unit> OnClickLoadAsObservable()
+        {
+            return _loadButton.OnClickAsObservable();
+        }
+
+        public IObservable<Unit> OnClickSaveAsObservable()
+        {
+            return _saveButton.OnClickAsObservable();
+        }
+
         public IObservable<Vector3> OnClickPositionAsObservable()
         {
             return _positionButton.OnClickAsObservable().Select(_ => _position);
