@@ -2,18 +2,26 @@
 
 package Domain{
 
-    '実際の処理をUseCaseに記載
-    class EditUseCase 
-    {
-        IUnityInputPresenter inputPresenter;
-        IDataStorePresenter datastorePresenter;
+    package UseCase{
 
-        void Delete();
-        void Add();
-        void ChangePosition();
-        void ChangeRotation);
-        void ChangeScale();
-        void ChangeFrame();
+        '実際の処理をUseCaseに記載
+        class EditUseCase
+        {
+            IUnityInputPresenter inputPresenter;
+
+            void Delete();
+            void Add();
+            void ChangePosition();
+            void ChangeRotation);
+            void ChangeScale();
+            void ChangeFrame();
+        }
+
+        class SaveDataUseCase
+        {
+            ISaveRepository saveRepository;
+        }
+
     }
 
     interface IUnityInputPresenter
@@ -32,11 +40,11 @@ package Domain{
     interface ISaveRepository
     {
         UniTask SaveAsync();
-        void LoadAsync();
+        UniTask LoadAsync();
     }
 
-    ISaveRepository <- EditUseCase
-    EditUseCase -> IUnityInputPresenter
+    SaveDataUseCase --> ISaveRepository
+    EditUseCase --> IUnityInputPresenter
 }
 
 package Repository {
@@ -44,7 +52,7 @@ package Repository {
     class SaveDataRepository
     {
         UniTask SaveAsync();
-        void LoadAsync();
+        UniTask LoadAsync();
     }
 
     interface IJsonDataStore {
@@ -58,7 +66,7 @@ package Repository {
 
 package Data {
 
-    class JsonDataStore 
+    class JsonDataStore
     {
         UniTask SaveAsync();
         UniTask LoadAsync();
@@ -99,7 +107,7 @@ package Presenter {
     }
 
     IUnityInputPresenter <|.. UnityInputPresenter
-    IUIView <- UnityInputPresenter 
+    IUIView <- UnityInputPresenter
     UnityInputPresenter -> IGameView
 }
 
@@ -112,7 +120,7 @@ package Detail {
         UnityEngine.UI.Button positionButtton;
         UnityEngine.UI.Button rotationButtton;
         UnityEngine.UI.Button scaleButtton;
-        
+
         'idを渡したいのでint
         IObservable<int> OnClickSaveButtonAsObservable();
         IObservable<Vector3> OnClickPositionAsObservable();
@@ -121,7 +129,7 @@ package Detail {
     }
 
     'UnityEngine.GameObjectを知っている
-    class GameView 
+    class GameView
     {
         List<PlacedEffect> placedEffects;
         void ChangePosition(int id, Vector3 position);
