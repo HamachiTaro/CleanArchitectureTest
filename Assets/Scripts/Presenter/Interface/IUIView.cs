@@ -8,9 +8,21 @@ namespace Presenter
     {
         IObservable<Unit> OnClickLoadAsObservable();
         IObservable<Unit> OnClickSaveAsObservable();
-
-        IObservable<Vector3> OnClickPositionAsObservable();
-        IObservable<Vector3> OnClickRotationAsObservable();
-        IObservable<Vector3> OnClickScaleAsObservable();
+        
+        IObservable<float> OnPositionXAsObservable();
+        IObservable<float> OnPositionYAsObservable();
+        IObservable<float> OnPositionZAsObservable();
+        
+        IObservable<float> OnRotationXAsObservable();
+        IObservable<float> OnRotationYAsObservable();
+        IObservable<float> OnRotationZAsObservable();
+        
+        IObservable<float> OnScaleXAsObservable();
+        IObservable<float> OnScaleYAsObservable();
+        IObservable<float> OnScaleZAsObservable();
+        
+        void ChangePosition(Vector3 position);
+        void ChangeRotation(Vector3 rotation);
+        void ChangeScale(Vector3 scale);
     }
 }

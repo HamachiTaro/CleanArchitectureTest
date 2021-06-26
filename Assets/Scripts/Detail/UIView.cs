@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 namespace Detail
 {
+    /// <summary>
+    /// positionは-5~5
+    /// rotationは-180~180
+    /// scaleは0~3
+    /// </summary>
     public class UIView : MonoBehaviour, IUIView
     {
-        [SerializeField] private Button _positionButton;
-        [SerializeField] private Button _rotationButton;
-        [SerializeField] private Button _scaleButton;
-
         [SerializeField] private Slider _positionXSlider;
         [SerializeField] private Slider _positionYSlider;
         [SerializeField] private Slider _positionZSlider;
@@ -27,34 +28,14 @@ namespace Detail
         [SerializeField] private Button _loadButton;
         [SerializeField] private Button _saveButton;
         
-        
-        private Vector3 _position = Vector3.zero;
-        private Vector3 _rotation = Vector3.zero;
-        private Vector3 _scale = Vector3.one;
-        
-        private CompositeDisposable _disposable;
-        
         private void Start()
         {
-            _disposable = new CompositeDisposable();
-
-            _positionXSlider.OnValueChangedAsObservable().Subscribe(val => _position.x = val).AddTo(_disposable);
-            _positionYSlider.OnValueChangedAsObservable().Subscribe(val => _position.y = val).AddTo(_disposable);
-            _positionZSlider.OnValueChangedAsObservable().Subscribe(val => _position.z = val).AddTo(_disposable);
-
-            _rotationXSlider.OnValueChangedAsObservable().Subscribe(val => _rotation.x = val).AddTo(_disposable);
-            _rotationYSlider.OnValueChangedAsObservable().Subscribe(val => _rotation.y = val).AddTo(_disposable);
-            _rotationZSlider.OnValueChangedAsObservable().Subscribe(val => _rotation.z = val).AddTo(_disposable);
             
-            _scaleXSlider.OnValueChangedAsObservable().Subscribe(val => _scale.x = val).AddTo(_disposable);
-            _scaleYSlider.OnValueChangedAsObservable().Subscribe(val => _scale.y = val).AddTo(_disposable);
-            _scaleZSlider.OnValueChangedAsObservable().Subscribe(val => _scale.z = val).AddTo(_disposable);
         }
 
         private void OnDestroy()
         {
             Debug.Log("destroy uiView");
-            _disposable.Dispose();
         }
 
         public IObservable<Unit> OnClickLoadAsObservable()
@@ -66,20 +47,71 @@ namespace Detail
         {
             return _saveButton.OnClickAsObservable();
         }
-
-        public IObservable<Vector3> OnClickPositionAsObservable()
+        
+        public IObservable<float> OnPositionXAsObservable()
         {
-            return _positionButton.OnClickAsObservable().Select(_ => _position);
+            return _positionXSlider.OnValueChangedAsObservable();
         }
 
-        public IObservable<Vector3> OnClickRotationAsObservable()
+        public IObservable<float> OnPositionYAsObservable()
         {
-            return _rotationButton.OnClickAsObservable().Select(_ => _rotation);
+            return _positionYSlider.OnValueChangedAsObservable();
         }
 
-        public IObservable<Vector3> OnClickScaleAsObservable()
+        public IObservable<float> OnPositionZAsObservable()
         {
-            return _scaleButton.OnClickAsObservable().Select(_ => _scale);
+            return _positionZSlider.OnValueChangedAsObservable();
+        }
+
+        public IObservable<float> OnRotationXAsObservable()
+        {
+            return _rotationXSlider.OnValueChangedAsObservable();
+        }
+
+        public IObservable<float> OnRotationYAsObservable()
+        {
+            return _rotationYSlider.OnValueChangedAsObservable();
+        }
+
+        public IObservable<float> OnRotationZAsObservable()
+        {
+            return _rotationZSlider.OnValueChangedAsObservable();
+        }
+
+        public IObservable<float> OnScaleXAsObservable()
+        {
+            return _scaleXSlider.OnValueChangedAsObservable();
+        }
+
+        public IObservable<float> OnScaleYAsObservable()
+        {
+            return _scaleYSlider.OnValueChangedAsObservable();
+        }
+
+        public IObservable<float> OnScaleZAsObservable()
+        {
+            return _scaleZSlider.OnValueChangedAsObservable();
+        }
+
+        public void ChangePosition(Vector3 position)
+        {
+            _positionXSlider.value = position.x;
+            _positionYSlider.value = position.y;
+            _positionZSlider.value = position.z;
+        }
+
+        public void ChangeRotation(Vector3 rotation)
+        {
+            _rotationXSlider.value = rotation.x;
+            _rotationYSlider.value = rotation.y;
+            _rotationZSlider.value = rotation.z;
+        }
+
+        public void ChangeScale(Vector3 scale)
+        {
+            _scaleXSlider.value = scale.x;
+            _scaleYSlider.value = scale.y;
+            _scaleZSlider.value = scale.z;
         }
     }
 }

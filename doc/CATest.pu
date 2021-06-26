@@ -109,9 +109,12 @@ package Presenter {
     interface IUIView
     {
         IObservable<Unit> OnClickSaveButtonAsObservable();
-        IObservable<Vector3> OnClickPositionAsObservable();
-        IObservable<Vector3> OnClickRotationAsObservable();
-        IObservable<Vector3> OnClickScaleAsObservable();
+        IObservable<float> OnPositionXAsObservable();
+        IObservable<float> OnPositionYAsObservable();
+        IObservable<float> OnPositionZAsObservable();
+        void ChangePosition();
+        void ChangeRoatation();
+        void ChangeScale();
     }
 
     interface IGameView
