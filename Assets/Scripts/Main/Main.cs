@@ -10,7 +10,7 @@ namespace Main
     {
         [Inject] private IInputPresenter _inputPresenter;
         [Inject] private IIOButtonPresenter _ioButtonPresenter;
-        // [Inject] private ISaveDataRepository _saveDataRepository;
+        [Inject] private ISaveDataRepository _saveDataRepository;
         
         private EditUseCase _editUseCase;
         private IOUseCase _ioUseCase;
@@ -21,7 +21,7 @@ namespace Main
             Debug.Log("Main Start");
             _disposable = new CompositeDisposable();
             _editUseCase = new EditUseCase(_disposable, _inputPresenter);
-            _ioUseCase = new IOUseCase(_disposable, /*_saveDataRepository,*/ _ioButtonPresenter);
+            _ioUseCase = new IOUseCase(_disposable, _saveDataRepository, _ioButtonPresenter);
         }
 
         private void OnDestroy()

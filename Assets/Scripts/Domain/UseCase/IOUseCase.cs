@@ -7,12 +7,12 @@ namespace Domain.UseCase
     public class IOUseCase
     {
 
-        // private ISaveDataRepository _saveDataRepository;
+        private ISaveDataRepository _saveDataRepository;
         private IIOButtonPresenter _ioButtonPresenter;
         
-        public IOUseCase(CompositeDisposable disposable, /*ISaveDataRepository saveDataRepository, */IIOButtonPresenter ioButtonPresenter)
+        public IOUseCase(CompositeDisposable disposable, ISaveDataRepository saveDataRepository, IIOButtonPresenter ioButtonPresenter)
         {
-            // _saveDataRepository = saveDataRepository;
+            _saveDataRepository = saveDataRepository;
             _ioButtonPresenter = ioButtonPresenter;
 
             _ioButtonPresenter.OnClickLoadAsObservable()

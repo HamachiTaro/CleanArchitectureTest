@@ -17,9 +17,10 @@ package Domain{
             void ChangeFrame();
         }
 
-        class SaveDataUseCase
+        class IOUseCase
         {
             ISaveRepository saveRepository;
+            IIOButtonPresenter ioButtonPresenter;
         }
 
     }
@@ -37,13 +38,20 @@ package Domain{
         IObservable<Vector3> OnChangeScaleAsObservable();
     }
 
+    interface IIOButtonPresenter
+    {
+        IObservable<Unit> OnClickSaveAsObservable();
+        IObservable<Unit> OnClickLoadAsObservable();
+    }
+
     interface ISaveRepository
     {
         UniTask SaveAsync();
         UniTask LoadAsync();
     }
 
-    SaveDataUseCase --> ISaveRepository
+    IOUseCase --> IIOButtonPresenter
+    IOUseCase --> ISaveRepository
     EditUseCase --> IUnityInputPresenter
 }
 
@@ -55,13 +63,13 @@ package Repository {
         UniTask LoadAsync();
     }
 
-    interface IJsonDataStore {
+    interface IDataStore {
         UniTask SaveAsync();
         UniTask LoadAsync();
     }
 
     ISaveRepository <|.. SaveDataRepository
-    IJsonDataStore <- SaveDataRepository
+    IDataStore <- SaveDataRepository
 }
 
 package Data {
@@ -74,11 +82,18 @@ package Data {
         void FromJson();
     }
 
-    IJsonDataStore <|.. JsonDataStore
+    IDataStore <|.. JsonDataStore
 }
 
 
 package Presenter {
+
+    class IOButtonPresenter
+    {
+        IObservable<Unit> OnClickSaveAsObservable();
+        IObservable<Unit> OnClickLoadAsObservable();
+    }
+
 
     class UnityInputPresenter
     {
@@ -106,9 +121,11 @@ package Presenter {
         void ChangeScale(int id, Vector3 scale);
     }
 
+    IIOButtonPresenter <|.. IOButtonPresenter
     IUnityInputPresenter <|.. UnityInputPresenter
-    IUIView <- UnityInputPresenter
-    UnityInputPresenter -> IGameView
+    UnityInputPresenter --> IUIView
+    UnityInputPresenter --> IGameView
+    IOButtonPresenter --> IUIView
 }
 
 package Detail {
@@ -117,12 +134,14 @@ package Detail {
     class UIView
     {
         UnityEngine.UI.Button saveButton;
+        UnityEngine.UI.Button loadButton;
         UnityEngine.UI.Button positionButtton;
         UnityEngine.UI.Button rotationButtton;
         UnityEngine.UI.Button scaleButtton;
 
         'idを渡したいのでint
         IObservable<int> OnClickSaveButtonAsObservable();
+        IObservable<int> OnClickLoadButtonAsObservable();
         IObservable<Vector3> OnClickPositionAsObservable();
         IObservable<Vector3> OnClickRotationAsObservable();
         IObservable<Vector3> OnClickScaleAsObservable();

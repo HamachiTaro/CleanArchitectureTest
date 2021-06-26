@@ -1,6 +1,9 @@
+using Data;
 using Detail;
 using Domain;
 using Presenter;
+using Repository;
+using Repository.Interface;
 using UnityEngine;
 using Zenject;
 
@@ -21,11 +24,16 @@ public class MainInstaller : MonoInstaller
             .Bind<IIOButtonPresenter>()
             .To<IOButtonPresenter>()
             .AsCached();
-        // Container
-        //     .Bind<ISaveDataRepository>()
-        //     .To<>()
-        
-        
+        Container
+            .Bind<ISaveDataRepository>()
+            .To<SaveDataRepository>()
+            .AsCached();
+
+        Container
+            .Bind<ISaveDataStore>()
+            .To<JsonDataStore>()
+            .AsCached();
+
         Container
             .Bind<IUIView>()
             .FromInstance(_uiView);
